@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Old Hollywood Style Quiz</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0b0a10;
+      color: #f7f2e9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .app {
+      max-width: 480px;
+      width: 100%;
+      padding: 24px 20px 32px;
+      background: radial-gradient(circle at top, #2b2233 0, #0b0a10 55%);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: #f4d3a0;
+    }
+    .title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #d5cbbd;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: rgba(7, 6, 12, 0.9);
+      border-radius: 14px;
+      padding: 18px 16px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .question-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c1b8aa;
+      margin-bottom: 8px;
+    }
+    .question {
+      font-size: 17px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    button {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 10px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      background: rgba(244, 211, 160, 0.1);
+      color: #f7f2e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    button.primary {
+      background: linear-gradient(135deg, #f4d3a0, #f2b36a);
+      color: #20171a;
+      border-color: rgba(255,255,255,0.35);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+    }
+    button.secondary {
+      background: rgba(15, 13, 21, 0.95);
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    }
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(244,211,160,0.55);
+      color: #f4d3a0;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+    .progress {
+      margin-top: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a79d8f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .bar {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-inner {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #f4d3a0, #f2b36a);
+      transition: width 0.2s ease;
+    }
+    .result-card {
+      text-align: center;
+    }
+    .result-name {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+    .result-tagline {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #c1b8aa;
+      margin-bottom: 16px;
+    }
+    .result-body {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #efe5d5;
+      margin-bottom: 16px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(244,211,160,0.08);
+      border: 1px solid rgba(244,211,160,0.45);
+      color: #f4d3a0;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .hint {
+      font-size: 11px;
+      color: #a79d8f;
+      text-align: center;
+      margin-top: 6px;
+    }
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="logo">Old Hollywood</div>
+    <div class="title">Welcher Old-Hollywood-Typ bist du?</div>
+    <div class="subtitle">Finde deinen Glamour-Guide in ein paar Klicks.</div>
+
+    <div id="card" class="card"></div>
+    <div id="progress" class="progress" style="display:none">
+      <span id="progressLabel"></span>
+      <div class="bar"><div id="barInner" class="bar-inner"></div></div>
+    </div>
+  </div>
+
+  <canvas id="downloadCanvas" width="768" height="432"></canvas>
+
+  <script>
+    const state = {
+      mode: null, // 'women' | 'men'
+      step: 'start'
+    };
+
+    const cardEl = document.getElementById('card');
+    const progressEl = document.getElementById('progress');
+    const progressLabelEl = document.getElementById('progressLabel');
+    const barInnerEl = document.getElementById('barInner');
+
+    function setProgress(current, total) {
+      progressEl.style.display = 'flex';
+      progressLabelEl.textContent = current + ' / ' + total;
+      const pct = (current / total) * 100;
+      barInnerEl.style.width = pct + '%';
+    }
+
+    function button(label, onClick, primary = false) {
+      const btn = document.createElement('button');
+      btn.textContent = label;
+      btn.className = primary ? 'primary' : 'secondary';
+      btn.onclick = onClick;
+      return btn;
+    }
+
+    function render() {
+      if (!state.mode) {
+        renderModeSelect();
+      } else if (state.mode === 'women') {
+        renderWomenFlow();
+      } else {
+        renderMenFlow();
+      }
+    }
+
+    function renderModeSelect() {
+      progressEl.style.display = 'none';
+      cardEl.innerHTML = '';
+      const label = document.createElement('div');
+      label.className = 'question-label';
+      label.textContent = 'Schritt 1';
+      const q = document.createElement('div');
+      q.className = 'question';
+      q.textContent = 'Möchtest du den Stil-Guide für Frauen oder Männer machen?';
+      const btns = document.createElement('div');
+      btns.className = 'buttons';
+      btns.appendChild(button('Frauen', () => { state.mode = 'women'; state.step = 'start'; render(); }, true));
+      btns.appendChild(button('Männer', () => { state.mode = 'men'; state.step = 'start'; render(); }));
+      cardEl.appendChild(label);
+      cardEl.appendChild(q);
+      cardEl.appendChild(btns);
+    }
+
+    // ---------- Frauen-Flow ----------
+    function renderWomenFlow() {
+      cardEl.innerHTML = '';
+      const totalSteps = 3; // grobe Anzeige
+
+      if (state.step === 'start') {
+        setProgress(1, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Frauen · Einstieg';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Wie möchtest du wirken?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Schlicht & elegant', () => { state.step = 'w_simple'; render(); }, true));
+        btns.appendChild(button('Dramatisch & glamourös', () => { state.step = 'w_glam'; render(); }));
+        btns.appendChild(button('Lässig, aber chic', () => { showWomenResult('lauren'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'w_simple') {
+        setProgress(2, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Schlicht & elegant';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Magst du klare Linien und reduzierten Schmuck?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, lieber minimalistisch', () => { state.step = 'w_simple_min'; render(); }, true));
+        btns.appendChild(button('Eher etwas verspielter', () => { state.step = 'w_simple_playful'; render(); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'w_simple_min') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Minimalistische Eleganz';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Greifst du gerne zu Schwarz oder sehr dunklen Tönen?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, am liebsten Schwarz', () => { showWomenResult('audrey'); }, true));
+        btns.appendChild(button('Nein, lieber helle Töne', () => { showWomenResult('grace'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'w_simple_playful') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Schlicht, aber verspielter';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Magst du zarte Farben wie Creme, Pastell oder helles Blau?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, helle Farben', () => { showWomenResult('grace'); }, true));
+        btns.appendChild(button('Nein, Hauptsache schlicht', () => { showWomenResult('custom_star'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'w_glam') {
+        setProgress(2, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Glamour';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Stehen bei dir Glanz, Schmuck und große Auftritte im Mittelpunkt?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, maximaler Glamour', () => { state.step = 'w_elizabeth'; render(); }, true));
+        btns.appendChild(button('Eher klassisch glamourös', () => { state.step = 'w_marilyn'; render(); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'w_elizabeth') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Maximaler Glamour';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Trägst du gerne große, auffällige Schmuckstücke?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, großer Statement-Schmuck', () => { showWomenResult('elizabeth'); }, true));
+        btns.appendChild(button('Glamour ja, aber weniger Schmuck', () => { showWomenResult('marilyn'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'w_marilyn') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Klassischer Glamour';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Liebst du Weiß, Creme oder zarte Rosé-Töne in Kombination mit roten Lippen?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, das ist genau mein Stil', () => { showWomenResult('marilyn'); }, true));
+        btns.appendChild(button('Andere Farbe, aber trotzdem glamourös', () => { showWomenResult('custom_star'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+    }
+
+    function showWomenResult(key) {
+      progressEl.style.display = 'none';
+      const data = {
+        audrey: {
+          name: 'Audrey Hepburn',
+          tagline: 'Schlichte Eleganz',
+          desc: 'Kleines Schwarzes, Perlen, Ballerinas und Fokus auf die Augen. Dein Look ist reduziert, aber maximal ikonisch.',
+          chips: ['Kleines Schwarzes', 'Perlen', 'Ballerinas', 'Winged Liner']
+        },
+        grace: {
+          name: 'Grace Kelly',
+          tagline: 'Königliche Raffinesse',
+          desc: 'Taillierte Kleider, sanfte Farben und dezenter Schmuck. Du wirkst wie ein Royal der 1950er Jahre.',
+          chips: ['Pastell & Creme', 'Taillierte Kleider', 'Dezenter Schmuck', 'Makellose Silhouette']
+        },
+        marilyn: {
+          name: 'Marilyn Monroe',
+          tagline: 'Sinnlicher Glamour',
+          desc: 'Weiße oder cremefarbene Kleider, rote Lippen, Wasserwellen und ein Beauty Spot. Du liebst den großen Auftritt.',
+          chips: ['Weiß & Creme', 'Rote Lippen', 'Wasserwellen', 'Faux Fur']
+        },
+        elizabeth: {
+          name: 'Elizabeth Taylor',
+          tagline: 'Opulente Extravaganz',
+          desc: 'Figurbetonte Robe, Diamanten und Farbedelsteine. Mehr ist mehr – dein Look ist dramatisch und luxuriös.',
+          chips: ['Statement-Schmuck', 'Kräftige Farben', 'Figurbetont', 'Glam-Eyeliner']
+        },
+        lauren: {
+          name: 'Lauren Bacall',
+          tagline: 'Lässige Eleganz',
+          desc: 'Schlichte Outfits mit einem starken Statement-Accessoire. Du wirkst cool, entspannt und gleichzeitig unnahbar.',
+          chips: ['Statement-Ohrringe', 'Natürliche Töne', 'Lässige Silhouette', 'Reduziertes Make-up']
+        },
+        custom_star: {
+          name: 'Dein eigener Star',
+          tagline: 'Individueller Hollywood-Mix',
+          desc: 'Du pickst dir aus allen Ikonen deine Lieblings-Elemente und erfindest deinen ganz eigenen Old-Hollywood-Look.',
+          chips: ['Eigene Farbwahl', 'Lieblingsschmuck', 'Persönlicher Twist']
+        }
+      }[key];
+
+      renderResult(data, 'women');
+    }
+
+    // ---------- Männer-Flow ----------
+    function renderMenFlow() {
+      cardEl.innerHTML = '';
+      const totalSteps = 3;
+
+      if (state.step === 'start') {
+        setProgress(1, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Männer · Einstieg';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Wie möchtest du dich kleiden?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Formell im Anzug', () => { state.step = 'm_formal'; render(); }, true));
+        btns.appendChild(button('Lässig / rebellisch', () => { state.step = 'm_casual'; render(); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'm_formal') {
+        setProgress(2, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Formeller Stil';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Magst du zeitlose, zurückhaltende Eleganz oder auffälligeren Old-Hollywood-Glamour?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Zeitlos & dezent', () => { state.step = 'm_cary'; render(); }, true));
+        btns.appendChild(button('Auffällig & präsent', () => { state.step = 'm_formal_show'; render(); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'm_cary') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Zeitlose Eleganz';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Greifst du gerne zu Grau, Dunkelblau oder Anthrazit ohne viel Schnickschnack?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Ja, klassisch und schlicht', () => { showMenResult('cary'); }, true));
+        btns.appendChild(button('Nein, etwas mehr Show', () => { showMenResult('frank'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'm_formal_show') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Auffälliger Glamour';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Magst du eine markante Silhouette mit breiten Revers oder lieber den eleganten Rat-Pack-Vibe?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Markante Silhouette', () => { showMenResult('clark'); }, true));
+        btns.appendChild(button('Rat-Pack-Vibe', () => { showMenResult('frank'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'm_casual') {
+        setProgress(2, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Lässiger Stil';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Soll dein Look eher rebellisch oder minimalistisch-cool sein?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Rebellisch', () => { state.step = 'm_rebel'; render(); }, true));
+        btns.appendChild(button('Minimalistisch & cool', () => { showMenResult('steve'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+
+      if (state.step === 'm_rebel') {
+        setProgress(3, totalSteps);
+        const label = document.createElement('div');
+        label.className = 'question-label';
+        label.textContent = 'Rebellischer Stil';
+        const q = document.createElement('div');
+        q.className = 'question';
+        q.textContent = 'Lederjacke & T-Shirt oder Jeans & Blouson?';
+        const btns = document.createElement('div');
+        btns.className = 'buttons';
+        btns.appendChild(button('Lederjacke & T-Shirt', () => { showMenResult('brando'); }, true));
+        btns.appendChild(button('Jeans & Blouson', () => { showMenResult('dean'); }));
+        cardEl.appendChild(label);
+        cardEl.appendChild(q);
+        cardEl.appendChild(btns);
+        return;
+      }
+    }
+
+    function showMenResult(key) {
+      progressEl.style.display = 'none';
+      const data = {
+        cary: {
+          name: 'Cary Grant',
+          tagline: 'Zeitlose Eleganz',
+          desc: 'Grau-Flanell-Anzug, Navy-Blazer, perfekte Passform – dein Look ist immer on point, ohne zu laut zu sein.',
+          chips: ['Grau-Flanell', 'Navy-Blazer', 'Feine Krawatte', 'Lederschuhe']
+        },
+        clark: {
+          name: 'Clark Gable',
+          tagline: 'King of Old Hollywood',
+          desc: 'Doppelreihige Anzüge, breite Revers und immer Krawatte & Einstecktuch. Du liebst eine kraftvolle Silhouette.',
+          chips: ['Doppelreiher', 'Breite Revers', 'Einstecktuch', 'Starker Auftritt']
+        },
+        frank: {
+          name: 'Frank Sinatra',
+          tagline: 'Rat-Pack-Chic',
+          desc: 'Anthrazitfarbener Dreiteiler, Trilby-Hut und entspannter Coolness-Faktor. Dein Look sagt: It’s showtime.',
+          chips: ['Dreiteiler', 'Trilby-Hut', 'Hohe Bundfalten', 'Easy Cool']
+        },
+        brando: {
+          name: 'Marlon Brando',
+          tagline: 'Filmrebell',
+          desc: 'Weißes T-Shirt, Lederjacke, Jeans. Du bist der Inbegriff des coolen Nonkonformisten.',
+          chips: ['Lederjacke', 'T-Shirt', 'Jeans', 'Raue Lässigkeit']
+        },
+        dean: {
+          name: 'James Dean',
+          tagline: 'Jugendlicher Rebell',
+          desc: 'Jeans, T-Shirt und kurzer Blouson. Dein Stil wirkt spontan, emotional und ikonisch.',
+          chips: ['Jeans', 'Blouson', 'T-Shirt', 'Casual Rebel']
+        },
+        steve: {
+          name: 'Steve McQueen',
+          tagline: 'King of Cool',
+          desc: 'Khakis, Kaschmirpullover, Chukka-Boots und Sonnenbrille. Minimalismus mit maximaler Ausstrahlung.',
+          chips: ['Khakis', 'Kaschmir', 'Chukka-Boots', 'Sonnenbrille']
+        }
+      }[key];
+
+      renderResult(data, 'men');
+    }
+
+    // ---------- Ergebnis anzeigen + Download ----------
+    function renderResult(data, mode) {
+      cardEl.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'result-card';
+
+      const pills = document.createElement('div');
+      pills.className = 'pill-row';
+      const p1 = document.createElement('div');
+      p1.className = 'pill';
+      p1.textContent = mode === 'women' ? 'Frauen' : 'Männer';
+      const p2 = document.createElement('div');
+      p2.className = 'pill';
+      p2.textContent = 'Old Hollywood Icon';
+      pills.appendChild(p1);
+      pills.appendChild(p2);
+
+      const name = document.createElement('div');
+      name.className = 'result-name';
+      name.textContent = data.name;
+
+      const tag = document.createElement('div');
+      tag.className = 'result-tagline';
+      tag.textContent = data.tagline;
+
+      const body = document.createElement('div');
+      body.className = 'result-body';
+      body.textContent = data.desc;
+
+      const chipsWrap = document.createElement('div');
+      chipsWrap.className = 'chips';
+      data.chips.forEach(c => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.textContent = c;
+        chipsWrap.appendChild(chip);
+      });
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+      const dlBtn = button('Ergebnis als Bild herunterladen', () => downloadResultImage(data, mode), true);
+      const restartBtn = button('Quiz neu starten', () => { state.mode = null; state.step = 'start'; render(); });
+      actions.appendChild(dlBtn);
+      actions.appendChild(restartBtn);
+
+      const hint = document.createElement('div');
+      hint.className = 'hint';
+      hint.textContent = 'Speichere das Bild und nutze es als Inspiration für dein Outfit.';
+
+      wrap.appendChild(pills);
+      wrap.appendChild(name);
+      wrap.appendChild(tag);
+      wrap.appendChild(body);
+      wrap.appendChild(chipsWrap);
+      wrap.appendChild(actions);
+      wrap.appendChild(hint);
+
+      cardEl.appendChild(wrap);
+    }
+
+    function downloadResultImage(data, mode) {
+      const canvas = document.getElementById('downloadCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Hintergrund
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#151019');
+      grad.addColorStop(1, '#050308');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Rahmen
+      ctx.strokeStyle = '#f4d3a0';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(24, 24, w - 48, h - 48);
+
+      ctx.fillStyle = '#f4d3a0';
+      ctx.font = '12px system-ui';
+      ctx.textBaseline = 'top';
+      ctx.fillText('OLD HOLLYWOOD', 40, 40);
+
+      ctx.fillStyle = '#f7f2e9';
+      ctx.font = '28px system-ui';
+      ctx.fillText(data.name, 40, 76);
+
+      ctx.fillStyle = '#c1b8aa';
+      ctx.font = '13px system-ui';
+      ctx.fillText(data.tagline.toUpperCase(), 40, 112);
+
+      // Beschreibung mehrzeilig
+      ctx.fillStyle = '#efe5d5';
+      ctx.font = '15px system-ui';
+      const desc = data.desc;
+      const maxWidth = w - 80;
+      const words = desc.split(' ');
+      const lines = [];
+      let line = '';
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        if (ctx.measureText(testLine).width > maxWidth) {
+          lines.push(line.trim());
+          line = words[i] + ' ';
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) lines.push(line.trim());
+      let y = 146;
+      lines.forEach(l => {
+        ctx.fillText(l, 40, y);
+        y += 22;
+      });
+
+      // Chips
+      ctx.font = '11px system-ui';
+      let chipY = h - 90;
+      let chipX = 40;
+      data.chips.forEach(chip => {
+        const paddingX = 10;
+        const paddingY = 4;
+        const textWidth = ctx.measureText(chip.toUpperCase()).width;
+        const chipWidth = textWidth + paddingX * 2;
+        if (chipX + chipWidth > w - 40) {
+          chipX = 40;
+          chipY += 24;
+        }
+        ctx.strokeStyle = 'rgba(244,211,160,0.7)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(chipX, chipY, chipWidth, 20);
+        ctx.fillStyle = '#f4d3a0';
+        ctx.fillText(chip.toUpperCase(), chipX + paddingX, chipY + paddingY);
+        chipX += chipWidth + 8;
+      });
+
+      const fileName = 'old-hollywood-' + data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.png';
+      const link = document.createElement('a');
+      link.download = fileName;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    render();
+  </script>
+</body>
+</html>
