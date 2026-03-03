@@ -144,6 +144,15 @@
       font-size: 22px;
       margin-bottom: 4px;
     }
+   .result-image {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 8px auto 12px;
+      display: block;
+      border: 2px solid #f4d3a0;
+    }
     .result-tagline {
       font-size: 12px;
       letter-spacing: 0.16em;
@@ -396,43 +405,50 @@
     function showWomenResult(key) {
       progressEl.style.display = 'none';
       const data = {
-        audrey: {
-          name: 'Audrey Hepburn',
-          tagline: 'Schlichte Eleganz',
-          desc: 'Kleines Schwarzes, Perlen, Ballerinas und Fokus auf die Augen. Dein Look ist reduziert, aber maximal ikonisch.',
-          chips: ['Kleines Schwarzes', 'Perlen', 'Ballerinas', 'Winged Liner']
-        },
-        grace: {
-          name: 'Grace Kelly',
-          tagline: 'Königliche Raffinesse',
-          desc: 'Taillierte Kleider, sanfte Farben und dezenter Schmuck. Du wirkst wie ein Royal der 1950er Jahre.',
-          chips: ['Pastell & Creme', 'Taillierte Kleider', 'Dezenter Schmuck', 'Makellose Silhouette']
-        },
-        marilyn: {
-          name: 'Marilyn Monroe',
-          tagline: 'Sinnlicher Glamour',
-          desc: 'Weiße oder cremefarbene Kleider, rote Lippen, Wasserwellen und ein Beauty Spot. Du liebst den großen Auftritt.',
-          chips: ['Weiß & Creme', 'Rote Lippen', 'Wasserwellen', 'Faux Fur']
-        },
-        elizabeth: {
-          name: 'Elizabeth Taylor',
-          tagline: 'Opulente Extravaganz',
-          desc: 'Figurbetonte Robe, Diamanten und Farbedelsteine. Mehr ist mehr – dein Look ist dramatisch und luxuriös.',
-          chips: ['Statement-Schmuck', 'Kräftige Farben', 'Figurbetont', 'Glam-Eyeliner']
-        },
-        lauren: {
-          name: 'Lauren Bacall',
-          tagline: 'Lässige Eleganz',
-          desc: 'Schlichte Outfits mit einem starken Statement-Accessoire. Du wirkst cool, entspannt und gleichzeitig unnahbar.',
-          chips: ['Statement-Ohrringe', 'Natürliche Töne', 'Lässige Silhouette', 'Reduziertes Make-up']
-        },
-        custom_star: {
-          name: 'Dein eigener Star',
-          tagline: 'Individueller Hollywood-Mix',
-          desc: 'Du pickst dir aus allen Ikonen deine Lieblings-Elemente und erfindest deinen ganz eigenen Old-Hollywood-Look.',
-          chips: ['Eigene Farbwahl', 'Lieblingsschmuck', 'Persönlicher Twist']
-        }
-      }[key];
+  audrey: {
+    name: 'Audrey Hepburn',
+    tagline: 'Schlichte Eleganz',
+    desc: 'Kleines Schwarzes, Perlen, Ballerinas und Fokus auf die Augen. Dein Look ist reduziert, aber maximal ikonisch.',
+    chips: ['Kleines Schwarzes', 'Perlen', 'Ballerinas', 'Winged Liner'],
+    image: 'assets/Audrey.png'
+  },
+  grace: {
+    name: 'Grace Kelly',
+    tagline: 'Königliche Raffinesse',
+    desc: 'Taillierte Kleider, sanfte Farben und dezenter Schmuck. Du wirkst wie ein Royal der 1950er Jahre.',
+    chips: ['Pastell & Creme', 'Taillierte Kleider', 'Dezenter Schmuck', 'Makellose Silhouette'],
+    image: 'assets/Grace.png'
+  },
+  marilyn: {
+    name: 'Marilyn Monroe',
+    tagline: 'Sinnlicher Glamour',
+    desc: 'Weiße oder cremefarbene Kleider, rote Lippen, Wasserwellen und ein Beauty Spot. Du liebst den großen Auftritt.',
+    chips: ['Weiß & Creme', 'Rote Lippen', 'Wasserwellen', 'Faux Fur'],
+    image: 'assets/Marilyn.png'
+  },
+  elizabeth: {
+    name: 'Elizabeth Taylor',
+    tagline: 'Opulente Extravaganz',
+    desc: 'Figurbetonte Robe, Diamanten und Farbedelsteine. Mehr ist mehr – dein Look ist dramatisch und luxuriös.',
+    chips: ['Statement-Schmuck', 'Kräftige Farben', 'Figurbetont', 'Glam-Eyeliner'],
+    image: 'assets/Elizabeth.png'
+  },
+  lauren: {
+    name: 'Lauren Bacall',
+    tagline: 'Lässige Eleganz',
+    desc: 'Schlichte Outfits mit einem starken Statement-Accessoire. Du wirkst cool, entspannt und gleichzeitig unnahbar.',
+    chips: ['Statement-Ohrringe', 'Natürliche Töne', 'Lässige Silhouette', 'Reduziertes Make-up'],
+    image: 'assets/Lauren.png'
+  },
+  custom_star: {
+    name: 'Dein eigener Star',
+    tagline: 'Individueller Hollywood-Mix',
+    desc: 'Du pickst dir aus allen Ikonen deine Lieblings-Elemente und erfindest deinen ganz eigenen Old-Hollywood-Look.',
+    chips: ['Eigene Farbwahl', 'Lieblingsschmuck', 'Persönlicher Twist'],
+    image: 'assets/Elizabeth.png' // oder ein neutrales Bild, wenn du eins hast
+  }
+}[key];
+
 
       renderResult(data, 'women');
     }
@@ -554,43 +570,57 @@
     function showMenResult(key) {
       progressEl.style.display = 'none';
       const data = {
-        cary: {
-          name: 'Cary Grant',
-          tagline: 'Zeitlose Eleganz',
-          desc: 'Grau-Flanell-Anzug, Navy-Blazer, perfekte Passform – dein Look ist immer on point, ohne zu laut zu sein.',
-          chips: ['Grau-Flanell', 'Navy-Blazer', 'Feine Krawatte', 'Lederschuhe']
-        },
-        clark: {
-          name: 'Clark Gable',
-          tagline: 'King of Old Hollywood',
-          desc: 'Doppelreihige Anzüge, breite Revers und immer Krawatte & Einstecktuch. Du liebst eine kraftvolle Silhouette.',
-          chips: ['Doppelreiher', 'Breite Revers', 'Einstecktuch', 'Starker Auftritt']
-        },
-        frank: {
-          name: 'Frank Sinatra',
-          tagline: 'Rat-Pack-Chic',
-          desc: 'Anthrazitfarbener Dreiteiler, Trilby-Hut und entspannter Coolness-Faktor. Dein Look sagt: It’s showtime.',
-          chips: ['Dreiteiler', 'Trilby-Hut', 'Hohe Bundfalten', 'Easy Cool']
-        },
-        brando: {
-          name: 'Marlon Brando',
-          tagline: 'Filmrebell',
-          desc: 'Weißes T-Shirt, Lederjacke, Jeans. Du bist der Inbegriff des coolen Nonkonformisten.',
-          chips: ['Lederjacke', 'T-Shirt', 'Jeans', 'Raue Lässigkeit']
-        },
-        dean: {
-          name: 'James Dean',
-          tagline: 'Jugendlicher Rebell',
-          desc: 'Jeans, T-Shirt und kurzer Blouson. Dein Stil wirkt spontan, emotional und ikonisch.',
-          chips: ['Jeans', 'Blouson', 'T-Shirt', 'Casual Rebel']
-        },
-        steve: {
-          name: 'Steve McQueen',
-          tagline: 'King of Cool',
-          desc: 'Khakis, Kaschmirpullover, Chukka-Boots und Sonnenbrille. Minimalismus mit maximaler Ausstrahlung.',
-          chips: ['Khakis', 'Kaschmir', 'Chukka-Boots', 'Sonnenbrille']
-        }
-      }[key];
+  cary: {
+    name: 'Cary Grant',
+    tagline: 'Zeitlose Eleganz',
+    desc: 'Grau-Flanell-Anzug, Navy-Blazer, perfekte Passform – dein Look ist immer on point, ohne zu laut zu sein.',
+    chips: ['Grau-Flanell', 'Navy-Blazer', 'Feine Krawatte', 'Lederschuhe'],
+    image: 'assets/Cary.png'
+  },
+  clark: {
+    name: 'Clark Gable',
+    tagline: 'King of Old Hollywood',
+    desc: 'Doppelreihige Anzüge, breite Revers und immer Krawatte & Einstecktuch. Du liebst eine kraftvolle Silhouette.',
+    chips: ['Doppelreiher', 'Breite Revers', 'Einstecktuch', 'Starker Auftritt'],
+    image: 'assets/Clark.png'
+  },
+  frank: {
+    name: 'Frank Sinatra',
+    tagline: 'Rat-Pack-Chic',
+    desc: 'Anthrazitfarbener Dreiteiler, Trilby-Hut und entspannter Coolness-Faktor. Dein Look sagt: It’s showtime.',
+    chips: ['Dreiteiler', 'Trilby-Hut', 'Hohe Bundfalten', 'Easy Cool'],
+    image: 'assets/Frank.png'
+  },
+  brando: {
+    name: 'Marlon Brando',
+    tagline: 'Filmrebell',
+    desc: 'Weißes T-Shirt, Lederjacke, Jeans. Du bist der Inbegriff des coolen Nonkonformisten.',
+    chips: ['Lederjacke', 'T-Shirt', 'Jeans', 'Raue Lässigkeit'],
+    image: 'assets/Marlon.png'
+  },
+  dean: {
+    name: 'James Dean',
+    tagline: 'Jugendlicher Rebell',
+    desc: 'Jeans, T-Shirt und kurzer Blouson. Dein Stil wirkt spontan, emotional und ikonisch.',
+    chips: ['Jeans', 'Blouson', 'T-Shirt', 'Casual Rebel'],
+    image: 'assets/James.png'
+  },
+  steve: {
+    name: 'Steve McQueen',
+    tagline: 'King of Cool',
+    desc: 'Khakis, Kaschmirpullover, Chukka-Boots und Sonnenbrille. Minimalismus mit maximaler Ausstrahlung.',
+    chips: ['Khakis', 'Kaschmir', 'Chukka-Boots', 'Sonnenbrille'],
+    image: 'assets/Steve.png'
+  },
+  humphrey: {
+    name: 'Humphrey Bogart',
+    tagline: 'Film-Noir-Eleganz',
+    desc: 'Dunkler Anzug, Fedora und Trenchcoat – dein Look ist wie eine Szene aus einem Schwarz-Weiß-Klassiker.',
+    chips: ['Trenchcoat', 'Fedora', 'Dunkler Anzug', 'Film Noir'],
+    image: 'assets/Humphrey.png'
+  }
+}[key];
+
 
       renderResult(data, 'men');
     }
@@ -601,6 +631,13 @@
       const wrap = document.createElement('div');
       wrap.className = 'result-card';
 
+if (data.image) {
+  const img = document.createElement('img');
+  img.className = 'result-image';
+  img.src = data.image;
+  img.alt = data.name;
+  wrap.appendChild(img);
+}
       const pills = document.createElement('div');
       pills.className = 'pill-row';
       const p1 = document.createElement('div');
